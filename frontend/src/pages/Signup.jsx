@@ -1,4 +1,6 @@
 import React,{useState} from 'react'
+import { Link } from 'react-router-dom';
+import axios from 'axios'
 
 const Signup = () => {
     const [name, setName] = useState('')
@@ -55,7 +57,9 @@ const Signup = () => {
             <div className='mb-4'>
             <button type='submit' className='w-full bg-teal-600 text-white py-2'>Signup</button>
             <p className='text-center'>
-            Already have an account? <a href=''>Login</a>
+            Already have an account?  <Link to="/login" className="text-teal-600 hover:underline">
+                Login
+              </Link>
             </p>
             </div>
        
