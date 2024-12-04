@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import NoteModel from "../components/NoteModel";
+import axios from 'axios';
 const Home = () => {
   const [isModelOpen, setModelOpen] = useState(false);
 
@@ -8,12 +9,17 @@ const Home = () => {
     setModelOpen(false);
   };
 
-  const addNote = async (title,description) => {
+  const addNote = async (title, description) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/note/add",
         { title, description },
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       if (response.data.success) {
         closeModel();
