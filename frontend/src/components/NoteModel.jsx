@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const NoteModel = ({ onClose, onAddNote }) => {
+const NoteModel = ({ closeModel, addNote }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault(); // Prevent page reload
-    //     if (!title.trim() || !description.trim()) {
-    //         alert('Please fill in both the title and description.');
-    //         return;
-    //     }
-    //     onAddNote({ title, description });
-    //     setTitle(''); 
-    //     setDescription('');
-    //     onClose(); 
-    // };
+    const navigate = useNavigate();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        addNote(title, description);
+        
+      };
 
     return (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
@@ -44,7 +39,7 @@ const NoteModel = ({ onClose, onAddNote }) => {
                         <button
                             type="button"
                             className="ml-4 bg-gray-400 px-4 py-2 rounded text-white"
-                            onClick={onClose}
+                            onClick={closeModel}
                         >
                             Cancel
                         </button>
