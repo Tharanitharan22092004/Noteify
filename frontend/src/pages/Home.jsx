@@ -6,12 +6,24 @@ import axios from "axios";
 
 const Home = () => {
   const [isModelOpen, setModelOpen] = useState(false);
+  const [filteredNotes,setFilteredNotes] = useState(false);
   const [notes, setNotes] = useState([]);
   const [currentNote, setCurrentNote] = useState(null);
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     fetchNotes();
   }, []);
+
+  useEffect(() => {
+      setFilteredNotes(
+        notes.filter((note) => 
+        note.title.toLowerCase().includes(query.toLowerCase()) ||
+        note.description.toLowerCase().includes(query.toLowerCase())
+    )
+  );
+
+  },[query,notes])
 
   const fetchNotes = async () => {
     try {
@@ -93,17 +105,17 @@ const Home = () => {
   };
   return (
     <div className="bg-gray-100 min-h-screen">
-      <Navbar />
+      <Navbar setQuery={setQuery}/>
 
       <div className="px-8 pt-4 grid grid-cols-1 md:grid-cols-3 gap-5">
-        {notes.map((note) => (
+        {filteredNotes.length>0?filteredNotes.map((note) => (
           <NoteCard
             key={note._id}
             note={note}
             onEdit={onEdit}
             deleteNote={deleteNote}
           />
-        ))}
+        )):<p>No Notes Found</p>}
       </div>
 
       <button
