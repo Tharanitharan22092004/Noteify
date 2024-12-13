@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/ContextProvider";
-
+import {toast} from "react-toastify"
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,14 +17,31 @@ const Login = () => {
         { email, password }
       );
       if (response.data.success) {
+        toast.success(response.data.msg, {
+          autoClose: 2000,
+        });
         login(response.data.user);
         localStorage.setItem("token", response.data.token);
         navigate("/");
+      } else {
+        toast.error(response.data.msg || "Login failed", {
+          autoClose: 2000,
+        });
       }
     } catch (error) {
       console.error(error);
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.msg || "An error occurred. Please try again.", {
+          autoClose: 2000,
+        });
+      } else {
+        toast.error("An unknown error occurred.", {
+          autoClose: 2000,
+        });
+      }
     }
   };
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">

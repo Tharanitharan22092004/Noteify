@@ -1,6 +1,3 @@
-
-
-// Backend Router
 const express = require("express");
 const Note = require("../models/Note");
 const router = express.Router();
@@ -19,7 +16,7 @@ router.post("/add", middleware, async (req, res) => {
     return res.status(200).json({ success: true, msg: "Note created" });
   } catch (err) {
     console.error("Add Note Error:", err.message);
-    return res.status(500).json({ success: false, msg: "Error creating note" });
+    return res.status(500).json({ success: false, msg: "Logged In for create a note" });
   }
 });
 

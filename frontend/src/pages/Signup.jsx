@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import {toast} from "react-toastify"
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -16,10 +17,27 @@ const Signup = () => {
         { headers: { "Content-Type": "application/json" } }
       );
       if (response.data.success) {
+        toast.success(response.data.msg,{
+          autoClose: 2000,
+        });
         navigate("/login");
+      }
+      else {
+        toast.error(response.data.msg || "Signup failed", {
+          autoClose: 2000,
+        });
       }
     } catch (error) {
       console.error(error);
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.msg || "An error occurred. Please try again.", {
+          autoClose: 2000,
+        });
+      } else {
+        toast.error("An unknown error occurred.", {
+          autoClose: 2000,
+        });
+      }
     }
   };
   return (

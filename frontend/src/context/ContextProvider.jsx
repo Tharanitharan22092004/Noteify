@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
-
+import {toast} from "react-toastify"
 const authContext = createContext();
 
 const ContextProvider = ({ children }) => {
@@ -11,6 +11,9 @@ const ContextProvider = ({ children }) => {
   };
 
   const logout = (navigate) => {
+    toast.success("User Logged Out",{
+      autoClose: 1000
+    });
     localStorage.removeItem("token");
     setUser(null);
     if (navigate) navigate("/login"); // Navigate to login after logout

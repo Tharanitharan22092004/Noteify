@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import NoteModel from "../components/NoteModel";
 import NoteCard from "../components/NoteCard";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [isModelOpen, setModelOpen] = useState(false);
@@ -61,11 +62,26 @@ const Home = () => {
         }
       );
       if (response.data.success) {
+        toast.success("Note Added successfully", {
+          autoClose: 2000,
+        });
         fetchNotes();
         closeModel();
       }
     } catch (error) {
       console.error(error);
+      if (error.response && error.response.data) {
+        toast.error(
+          error.response.data.msg || "Logged In to create a notes",
+          {
+            autoClose: 2000,
+          }
+        );
+      } else {
+        toast.error("An unknown error occurred.", {
+          autoClose: 2000,
+        });
+      }
     }
   };
 
@@ -81,6 +97,9 @@ const Home = () => {
         }
       );
       if (response.data.success) {
+        toast.success("Note deleted successfully", {
+          autoClose: 2000,
+        });
         fetchNotes();
       }
     } catch (error) {
@@ -101,6 +120,9 @@ const Home = () => {
         }
       );
       if (response.data.success) {
+        toast.success("Note updated successfully", {
+          autoClose: 2000,
+        });
         fetchNotes();
         closeModel();
       }
@@ -115,13 +137,11 @@ const Home = () => {
 
       <div className="px-8 pt-4 grid grid-cols-1 md:grid-cols-3 gap-5">
         {notes.length === 0 ? (
-          <p>
-        
-          </p>
+          <p></p>
         ) : filteredNotes.length === 0 ? (
           <p className=" text-gray-600 text-lg font-semibold">
-      No notes match your search.{" "}
-    </p>
+            No notes match your search.{" "}
+          </p>
         ) : (
           filteredNotes.map((note) => (
             <NoteCard
@@ -135,7 +155,7 @@ const Home = () => {
       </div>
 
       <button
-        className="w-16 h-16 flex items-center justify-center rounded-2xl bg-primary bg-blue-600 absolute right-10 bottom-10"
+        className="text-2xl w-16 h-16 flex items-center justify-center rounded-2xl bg-primary bg-blue-600 absolute right-10 bottom-10"
         onClick={() => {
           setCurrentNote(null);
           setModelOpen(true);

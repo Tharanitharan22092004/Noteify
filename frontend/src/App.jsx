@@ -4,7 +4,8 @@ import ContextProvider from "./context/ContextProvider";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   return (
     <Router>
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
         </Routes>
       </ContextProvider>
+      <ToastContainer />
     </Router>
   );
 };

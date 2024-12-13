@@ -19,7 +19,7 @@ const Navbar = ({ setQuery }) => {
       <div className="flex items-center">
         {user ? (
           <>
-            <span className="mr-4">{user.name || "User"}</span>
+            <span className="mr-4 text-black text-xl">{user.name || "User"}</span>
             <button
               onClick={() => logout(navigate)}
               className="bg-red-500 px-4 py-2 rounded"
