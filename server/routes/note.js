@@ -1,3 +1,6 @@
+
+
+// Backend Router
 const express = require("express");
 const Note = require("../models/Note");
 const router = express.Router();
@@ -10,43 +13,47 @@ router.post("/add", middleware, async (req, res) => {
     const newNote = new Note({
       title,
       description,
-      user: req.user._id,
+      userId: req.user.id,
     });
     await newNote.save();
-    return res.status(200).json({ success: true, msg: "Account created" });
+    return res.status(200).json({ success: true, msg: "Note created" });
   } catch (err) {
-    return res.status(500).json({ success: false, msg: "Error adding user" });
+    console.error("Add Note Error:", err.message);
+    return res.status(500).json({ success: false, msg: "Error creating note" });
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", middleware, async (req, res) => {
   try {
-    const notes = await Note.find();
+    const notes = await Note.find({ userId: req.user.id });
     return res.status(200).json({ success: true, notes });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, msg: "can't retrieve notes" });
+    console.error("Get Notes Error:", error.message);
+    return res.status(500).json({ success: false, msg: "Unable to retrieve notes" });
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", middleware, async (req, res) => {
   try {
     const { id } = req.params;
-    const updateNote = await Note.findByIdAndUpdate(id, req.body);
+    const updateNote = await Note.findByIdAndUpdate(id, req.body, { new: true });
     return res.status(200).json({ success: true, updateNote });
   } catch (error) {
-    return res.status(500).json({ success: false, msg: "can't Update notes" });
+    console.error("Update Note Error:", error.message);
+    return res.status(500).json({ success: false, msg: "Unable to update note" });
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", middleware, async (req, res) => {
   try {
     const { id } = req.params;
     const deleteNote = await Note.findByIdAndDelete(id);
     return res.status(200).json({ success: true, deleteNote });
   } catch (error) {
-    return res.status(500).json({ success: false, msg: "can't delete notes" });
+    console.error("Delete Note Error:", error.message);
+    return res.status(500).json({ success: false, msg: "Unable to delete note" });
   }
 });
+
 module.exports = router;
+

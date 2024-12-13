@@ -1,35 +1,27 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/ContextProvider";
 
-const Navbar = ({setQuery}) => {
-  const { user } = useAuth();
+const Navbar = ({ setQuery }) => {
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    
-    localStorage.removeItem("userToken"); 
-    alert("You have been logged out.");
-    navigate("/login"); 
-  };
-
   return (
-    <nav className="bg-gray-800 p-4 text-white flex justify-between items-center">
-      <div className="text-xl font-bold">
-        <Link to="/">Noteify</Link>
-      </div>
+    <nav className="bg-gray-300 p-4 text-white flex justify-between items-center">
+      <h2 className="text-3xl font-medium text  text-blue-700 py-4">Note  
+      <span className='text-3xl font-medium text-orange-600 py-4'>-ify</span></h2>
       <input
         type="text"
         placeholder="Search notes..."
-        className="bg-gray-600 px-4 py-2 rounded"
-        onChange={(e)=>setQuery(e.target.value)}
+        className="bg-gray-100 px-4 py-2 rounded text-black"
+        onChange={(e) => setQuery(e.target.value)}
       />
       <div className="flex items-center">
         {user ? (
           <>
             <span className="mr-4">{user.name || "User"}</span>
             <button
-              onClick={handleLogout}
+              onClick={() => logout(navigate)}
               className="bg-red-500 px-4 py-2 rounded"
             >
               Logout
@@ -37,12 +29,18 @@ const Navbar = ({setQuery}) => {
           </>
         ) : (
           <>
-            <Link to="/login" className="bg-blue-500 px-4 py-2 rounded mr-4">
+            <button
+              onClick={() => navigate("/login")}
+              className="bg-blue-500 px-4 py-2 rounded mr-4"
+            >
               Login
-            </Link>
-            <Link to="/signup" className="bg-green-500 px-4 py-2 rounded">
+            </button>
+            <button
+              onClick={() => navigate("/signup")}
+              className="bg-green-500 px-4 py-2 rounded"
+            >
               Signup
-            </Link>
+            </button>
           </>
         )}
       </div>
